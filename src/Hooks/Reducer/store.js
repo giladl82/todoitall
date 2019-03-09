@@ -1,8 +1,8 @@
 import React, { useContext, useReducer, useEffect, useState } from 'react';
 const Context = React.createContext();
 
-export const Provider = ({ children, initialState, reducer, enableDebug }) => {
-  const store = createStore(initialState, reducer, enableDebug);
+export const Provider = ({ children, state, reducer, enableDebug }) => {
+  const store = createStore(state, reducer, enableDebug);
   return <Context.Provider value={store}>{children}</Context.Provider>;
 };
 

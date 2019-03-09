@@ -9,7 +9,7 @@ const TodoList = () => {
     event.preventDefault();
     dispatch(deleteToto(event.target.dataset.id));
   };
-
+  console.log(state);
   if (!state.todos || !state.todos.length) return null;
 
   return (
