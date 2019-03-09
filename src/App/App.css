@@ -1,0 +1,65 @@
+.App {
+  text-align: center;
+  font-size: calc(10px + 1vmin);
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 10px;
+}
+
+.App-nav {
+  display: flex;
+  width: 60%;
+  margin: auto;
+  justify-content: space-between;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.App-todo-input {
+  border: solid 1px #ccc;
+  padding: 5px 10px;
+}
+
+.App-todo-button {
+  padding: 5px 10px;
+  border: solid 1px #666;
+  margin: 0 5px;
+  outline: none;
+}
+
+.App-todo-button:hover {
+  cursor: pointer;
+  border: outset 1px #999;
+}
+
+.App-todo-button:active {
+  border: outset 1px #ccc;
+}
+
+.App-todo-list {
+  width: 60%;
+  margin: auto;
+}
+
+.App-todo-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 5px;
+  border-bottom: solid 1px #ccc;
+}
+
+.App-todo-list li button {
+  border: none;
+  background: transparent;
+  color: #990000;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+
+.App-todo-list li button:hover {
+  transform: scale(1.1);
+}
