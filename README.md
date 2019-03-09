@@ -4,10 +4,10 @@ I once read this post called [Every time you build a to-do list app, a puppy üê
 So I'd like to apologize to all puppies out there, but this is an example of a simple Todo app.
 
 **I actually built four todo apps.**
-One as a _Class_ component using _State_.
-One as a _Class_ component using _Redux_.
-One as a _Hook_ function component using _State_.
-One as a _Hook_ function component using the _Context_ API and the _useReducer_ hook.
+- One as a _Class_ component using _State_.
+- One as a _Class_ component using _Redux_.
+- One as a _Hook_ function component using _State_.
+- One as a _Hook_ function component using the _Context_ API and the _useReducer_ hook.
 
 I wanted to see and show the differences in implementations and in testing each type of component.
 
