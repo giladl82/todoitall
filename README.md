@@ -14,5 +14,5 @@ I wanted to see and show the differences in implementations and in testing each 
 
 ##### Still need to be done:
 
-1. Write test to the reducer / actions
+1. Write test to the reducer / actions.
 2. Write test to the custom hook _"useStore"_.
