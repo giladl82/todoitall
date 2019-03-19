@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { useStore } from './store';
-import { deleteToto } from '../../state/actions';
+import { deleteTodo } from '../../state/actions';
 
 const TodoList = () => {
   const [state, dispatch] = useStore();
   const handleDeleteItem = event => {
     event.preventDefault();
-    dispatch(deleteToto(event.target.dataset.id));
+    dispatch(deleteTodo(event.target.dataset.id));
   };
   console.log(state);
   if (!state.todos || !state.todos.length) return null;

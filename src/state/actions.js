@@ -5,7 +5,7 @@ export const addTodo = ({ todo }) => ({
   label: todo
 });
 
-export const deleteToto = id => ({
+export const deleteTodo = id => ({
   type: DELETE_TODO,
   id
 });

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { deleteToto } from '../../state/actions';
+import { deleteTodo } from '../../state/actions';
 
 class TodoList extends Component {
   handleDeleteItem = event => {
     event.preventDefault();
-    this.props.deleteToto(event.target.dataset.id);
+    this.props.deleteTodo(event.target.dataset.id);
   };
 
   render() {
@@ -36,7 +36,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      deleteToto
+      deleteTodo
     },
     dispatch
   );

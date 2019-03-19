@@ -1,5 +1,5 @@
 import { ADD_TODO, DELETE_TODO } from "./action-types";
-import { addTodo, deleteToto } from "./actions";
+import { addTodo, deleteTodo } from "./actions";
 
 describe('Redux actions', () => {
     it('Should return ADD_TODO action with todo', () => {
@@ -17,6 +17,6 @@ describe('Redux actions', () => {
             id: 1
         }
 
-        expect(deleteToto(1)).toEqual(expected);
+        expect(deleteTodo(1)).toEqual(expected);
     })
 })
