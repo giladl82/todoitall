@@ -12,6 +12,20 @@ So I'd like to apologize to all puppies out there, but this is an example of a s
 
 I wanted to see and show the differences in implementations and in testing each type of component.
 
+## Folder structure
+
+```
+src
+├── App          // Container for all examples
+├── Classes      // Class component examples
+│   ├── Redux
+│   └── State
+├── Hooks        // Hooks example
+│   ├── Reducer
+│   └── State
+└── state
+```
+
 ## Clone the project
 
 ```bash
@@ -34,20 +48,6 @@ npm run start
 
 ```bash
 npm run test
-```
-
-## Folder structure
-
-```
-src
-├── App          // Container for all examples
-├── Classes      // Class component examples
-│   ├── Redux
-│   └── State
-├── Hooks        // Hooks example
-│   ├── Reducer
-│   └── State
-└── state
 ```
 
 ##### Still need to be done:
