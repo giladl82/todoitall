@@ -36,6 +36,20 @@ npm run start
 npm run test
 ```
 
+## Folder structure
+
+```
+src
+├── App          // Container for all examples
+├── Classes      // Class component examples
+│   ├── Redux
+│   └── State
+├── Hooks        // Hooks example
+│   ├── Reducer
+│   └── State
+└── state
+```
+
 ##### Still need to be done:
 
 1. Write test to the reducer / actions.
