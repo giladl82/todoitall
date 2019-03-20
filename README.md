@@ -14,25 +14,25 @@ I wanted to see and show the differences in implementations and in testing each 
 
 ## Clone the project
 
-```
+```bash
 git clone https://github.com/giladl82/todoitall.git
 ```
 
 ## Install dependencies
 
-```
+```bash
 npm install
 ```
 
 ## Start the project
 
-```
+```bash
 npm run start
 ```
 
 ## Run tests
 
-```
+```bash
 npm run test
 ```
 
