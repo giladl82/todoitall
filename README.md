@@ -12,6 +12,30 @@ So I'd like to apologize to all puppies out there, but this is an example of a s
 
 I wanted to see and show the differences in implementations and in testing each type of component.
 
+## Clone the project
+
+```
+git clone https://github.com/giladl82/todoitall.git
+```
+
+## Install dependencies
+
+```
+npm install
+```
+
+## Start the project
+
+```
+npm run start
+```
+
+## Run tests
+
+```
+npm run test
+```
+
 ##### Still need to be done:
 
 1. Write test to the reducer / actions.
