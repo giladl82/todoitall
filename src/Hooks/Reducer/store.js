@@ -1,45 +1,78 @@
 import React, { useContext, useReducer, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
 const Context = React.createContext();
 
 export const Provider = ({ children, state, reducer, enableDebug }) => {
-  const store = createStore(state, reducer, enableDebug);
-  return <Context.Provider value={store}>{children}</Context.Provider>;
-};
-
-export const createStore = (initialState, reducer, enableDebug = false) => {
-  const [store, dispatch] = useReducer(reducer, reducer(initialState, {}));
-  store.__dispatch = dispatch;
+  const store = useStoreCreator(state, reducer, enableDebug);
   store.__enableDebug = enableDebug;
 
-  return store;
-};
-
-export const useStore = () => {
-  const store = useContext(Context);
-  const { __dispatch, __enableDebug } = store;
-
-  const [action, setAction] = useState('@@INIT__STORE');
-
   useEffect(() => {
-    if (__enableDebug) {
+    if (enableDebug) {
       console.log(
-        `%cAction: %c${JSON.stringify(action)} |  %cState: %c${JSON.stringify(store)}`,
+        `%cAction: %c${JSON.stringify(store.__action)} |  %cState: %c${JSON.stringify(getClearState(store))}`,
         'font-weight:bold; color: green; font-size: 15px;',
         'color: black; font-size: 15px;',
         'font-weight:bold; color: blue; font-size: 15px;',
         'color: black; font-size: 15px;'
       );
     }
-  }, [store, action]);
+  }, [store]);
 
+  return <Context.Provider value={store}>{children}</Context.Provider>;
+};
+
+Provider.propTypes = {
+  reducer: PropTypes.func.isRequired,
+  state: PropTypes.object,
+  enableDebug: PropTypes.bool
+};
+
+Provider.defaultProps = {
+  state: undefined,
+  enableDebug: false
+};
+
+export const useStoreCreator = (initialState, reducer) => {
+  const ACTION_TYPE = '@@INIT_STATE';
+  const [store, dispatch] = useReducer(reducer, reducer(initialState, { ACTION_TYPE }));
+  const [action, setAction] = useState(ACTION_TYPE);
+
+  store.__dispatch = dispatch;
+  store.__action = action;
+  store.__setAction = setAction;
+
+  return store;
+};
+
+export const combineReducers = reducers => (state, action) => {
+  let resultedState = {};
+  Object.keys(reducers).forEach(key => {
+    resultedState[key] = reducers[key](state, action);
+  });
+
+  return resultedState;
+};
+
+const getClearState = store => {
   const state = { ...store };
+  Object.keys(state).forEach(key => {
+    if (key.startsWith('__')) {
+      delete state[key];
+    }
+  });
 
-  delete state.__dispatch;
-  delete state.__enableDebug;
+  return state;
+};
+
+export const useStore = () => {
+  const store = useContext(Context);
+  const { __dispatch, __enableDebug, __setAction } = store;
+  const state = getClearState(store);
 
   if (__enableDebug) {
     const dispatcher = action => {
-      setAction(action);
+      __setAction(action);
       __dispatch(action);
     };
     return [state, dispatcher];
