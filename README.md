@@ -12,6 +12,44 @@ So I'd like to apologize to all puppies out there, but this is an example of a s
 
 I wanted to see and show the differences in implementations and in testing each type of component.
 
+## Folder structure
+
+```
+src
+├── App          // Container for all examples
+├── Classes      // Class component examples
+│   ├── Redux
+│   └── State
+├── Hooks        // Hooks example
+│   ├── Reducer
+│   └── State
+└── state
+```
+
+## Clone the project
+
+```bash
+git clone https://github.com/giladl82/todoitall.git
+```
+
+## Install dependencies
+
+```bash
+npm install
+```
+
+## Start the project
+
+```bash
+npm run start
+```
+
+## Run tests
+
+```bash
+npm run test
+```
+
 ##### Still need to be done:
 
 1. Write test to the reducer / actions.
