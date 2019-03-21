@@ -1,7 +1,7 @@
 import React from 'react';
-import useFrom from '../useForm';
+import useForm from '../useForm';
 const AddTodo = ({ onAddTodo }) => {
-  const { values, handleChange, reset } = useFrom();
+  const { values, handleChange, reset } = useForm();
 
   const handleSubmit = event => {
     event.preventDefault();
