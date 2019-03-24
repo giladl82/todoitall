@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useEffect, useState } from 'react';
+import React, { useContext, useReducer, useEffect, useState, error } from 'react';
 import PropTypes from 'prop-types';
 
 const Context = React.createContext();
@@ -47,7 +47,17 @@ export const useStoreCreator = (initialState, reducer) => {
 
 export const combineReducers = reducers => (state, action) => {
   let resultedState = {};
+
+  if(!reducers) {
+    error('combineReducers must receive an object')
+  }
+
   Object.keys(reducers).forEach(key => {
+    if(typeof reducers[key] !== 'function') {
+      error(`reducers.${key} must by of type function`);
+      return;
+    }
+
     resultedState[key] = reducers[key](state, action);
   });
 
@@ -65,10 +75,20 @@ const getClearState = store => {
   return state;
 };
 
-export const useStore = () => {
+export const useStore = mapStateAs => {
   const store = useContext(Context);
   const { __dispatch, __enableDebug, __setAction } = store;
-  const state = getClearState(store);
+  let state;
+
+  if(mapStateAs) {
+    if(typeof mapStateAs === 'function') {
+      state = mapStateAs(getClearState(store));
+    } else {
+      error('mapStateAs, if supplied, must be a function!')
+    }
+  } else {
+    state = getClearState(store);
+  }
 
   if (__enableDebug) {
     const dispatcher = action => {
