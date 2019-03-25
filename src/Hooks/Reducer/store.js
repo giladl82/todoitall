@@ -1,5 +1,19 @@
 import React, { useContext, useReducer, useEffect, useState, error } from 'react';
+import { struct } from 'superstruct';
 import PropTypes from 'prop-types';
+
+const validateSoreCreatorStruct = struct({
+  initialState: 'any?',
+  reducer: 'function'
+});
+
+const validateCombineReducersStruct = struct({
+  reducers: struct.dict(['string', 'function'])
+});
+
+const validateUseStoreStruct = struct({
+  mapStateAs: 'function?'
+});
 
 const Context = React.createContext();
 
@@ -34,6 +48,10 @@ Provider.defaultProps = {
 };
 
 export const useStoreCreator = (initialState, reducer) => {
+  validateSoreCreatorStruct({
+    initialState,
+    reducer
+  });
   const ACTION_TYPE = '@@INIT_STATE';
   const [store, dispatch] = useReducer(reducer, reducer(initialState, { ACTION_TYPE }));
   const [action, setAction] = useState(ACTION_TYPE);
@@ -45,23 +63,17 @@ export const useStoreCreator = (initialState, reducer) => {
   return store;
 };
 
-export const combineReducers = reducers => (state, action) => {
-  let resultedState = {};
+export const combineReducers = reducers => {
+  validateCombineReducersStruct({ reducers });
+  return (state, action) => {
+    let resultedState = {};
 
-  if(!reducers) {
-    error('combineReducers must receive an object')
-  }
+    Object.keys(reducers).forEach(key => {
+      resultedState[key] = reducers[key](state, action);
+    });
 
-  Object.keys(reducers).forEach(key => {
-    if(typeof reducers[key] !== 'function') {
-      error(`reducers.${key} must by of type function`);
-      return;
-    }
-
-    resultedState[key] = reducers[key](state, action);
-  });
-
-  return resultedState;
+    return resultedState;
+  };
 };
 
 const getClearState = store => {
@@ -76,15 +88,19 @@ const getClearState = store => {
 };
 
 export const useStore = mapStateAs => {
+  validateUseStoreStruct({
+    mapStateAs
+  });
+
   const store = useContext(Context);
   const { __dispatch, __enableDebug, __setAction } = store;
   let state;
 
-  if(mapStateAs) {
-    if(typeof mapStateAs === 'function') {
+  if (mapStateAs) {
+    if (typeof mapStateAs === 'function') {
       state = mapStateAs(getClearState(store));
     } else {
-      error('mapStateAs, if supplied, must be a function!')
+      error('mapStateAs, if supplied, must be a function!');
     }
   } else {
     state = getClearState(store);
