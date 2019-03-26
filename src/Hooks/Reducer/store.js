@@ -2,7 +2,7 @@ import React, { useContext, useReducer, useEffect, useState, error } from 'react
 import { struct } from 'superstruct';
 import PropTypes from 'prop-types';
 
-const validateSoreCreatorStruct = struct({
+const validateStoreCreatorStruct = struct({
   initialState: 'any?',
   reducer: 'function'
 });
@@ -12,7 +12,12 @@ const validateCombineReducersStruct = struct({
 });
 
 const validateUseStoreStruct = struct({
-  mapStateAs: 'function?'
+  mapStateAs: 'function?',
+  mapActionsAs: 'object?'
+});
+
+const validateMapActionsAs = struct({
+  actions: struct.dict(['string', 'function'])
 });
 
 const Context = React.createContext();
@@ -48,7 +53,7 @@ Provider.defaultProps = {
 };
 
 export const useStoreCreator = (initialState, reducer) => {
-  validateSoreCreatorStruct({
+  validateStoreCreatorStruct({
     initialState,
     reducer
   });
@@ -87,14 +92,16 @@ const getClearState = store => {
   return state;
 };
 
-export const useStore = mapStateAs => {
+export const useStore = (...maps) => {
+  const [mapStateAs, mapActionsAs] = maps;
   validateUseStoreStruct({
-    mapStateAs
+    mapStateAs,
+    mapActionsAs
   });
 
   const store = useContext(Context);
   const { __dispatch, __enableDebug, __setAction } = store;
-  let state;
+  let state, dispatcher;
 
   if (mapStateAs) {
     if (typeof mapStateAs === 'function') {
@@ -106,13 +113,37 @@ export const useStore = mapStateAs => {
     state = getClearState(store);
   }
 
-  if (__enableDebug) {
-    const dispatcher = action => {
-      __setAction(action);
-      __dispatch(action);
-    };
-    return [state, dispatcher];
-  } else {
-    return [state, __dispatch];
+  dispatcher = actionCreator => {
+    if (actionCreator instanceof Promise) {
+      Promise.all([actionCreator]).then(([action]) => {
+        __dispatch(action);
+        if (__enableDebug) {
+          __setAction(action);
+        }
+      });
+    } else {
+      __dispatch(actionCreator);
+      if (__enableDebug) {
+        __setAction(actionCreator);
+      }
+    }
+  };
+
+  if (mapActionsAs) {
+    validateMapActionsAs({
+      actions: maps[1]
+    });
+
+    const actions = Object.keys(mapActionsAs).reduce((result, key) => {
+      result[key] = function() {
+        return dispatcher(mapActionsAs[key].apply(this, arguments));
+      };
+
+      return result;
+    }, {});
+
+    return [state, actions];
   }
+
+  return [state, dispatcher];
 };
