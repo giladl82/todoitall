@@ -116,10 +116,10 @@ export const useStore = (...maps) => {
   dispatcher = actionCreator => {
     if (actionCreator instanceof Promise) {
       Promise.all([actionCreator]).then(([action]) => {
-        __dispatch(action);
         if (__enableDebug) {
           __setAction(action);
         }
+        __dispatch(action);
       });
     } else {
       __dispatch(actionCreator);
