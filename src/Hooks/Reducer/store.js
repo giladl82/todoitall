@@ -34,13 +34,17 @@ export const Provider = ({ children, state, reducer, enableDebug }) => {
         window.__REDUX_DEVTOOLS_EXTENSION__.connect &&
         typeof window.__REDUX_DEVTOOLS_EXTENSION__.connect === 'function'
       ) {
-        if (!devTools) {
-          const tools = window.__REDUX_DEVTOOLS_EXTENSION__.connect();
-          setDevTools(tools);
-          tools.init();
-        } else {
-          devTools.send(store.__action, getClearState(store));
-        }
+        const tools = window.__REDUX_DEVTOOLS_EXTENSION__.connect();
+        setDevTools(tools);
+        tools.init();
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (enableDebug) {
+      if (devTools) {
+        devTools.send(store.__action, getClearState(store));
       } else {
         console.log(
           `%cAction: %c${JSON.stringify(store.__action)} |  %cState: %c${JSON.stringify(getClearState(store))}`,
