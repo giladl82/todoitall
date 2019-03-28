@@ -1,12 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { renderHook, cleanup } from 'react-hooks-testing-library';
 import { renderWithStore } from './renderWithStore';
 import { useStoreCreator, combineReducers, Provider, useStore } from './store';
-
-const initialState = {
-  data: 'data'
-};
-const reducer = (state, action) => initialState;
 
 afterEach(cleanup);
 
@@ -69,10 +64,82 @@ describe('store', () => {
     });
 
     it('Should return a store object', () => {
+      const initialStore = {
+        data: 'data'
+      };
+
+      const reducer = (state, action) => initialStore;
+
       const { result } = renderHook(() => useStoreCreator(undefined, reducer));
 
-      expect(result.current).toBe(initialState);
+      expect(result.current).toBe(initialStore);
       expect(typeof result.current.__dispatch).toBe('function');
+    });
+  });
+
+  describe('useStore abilities', () => {
+    it('Should get full store state', () => {
+      const initialState = {
+        data: 'data'
+      };
+
+      const reducer = (state, action) => ({ ...initialState });
+
+      let resultedState;
+      const Child = () => {
+        const [state, dispatch] = useStore();
+        resultedState = state;
+        return <div />;
+      };
+
+      renderWithStore(<Child />, { initialState, reducer });
+
+      expect(resultedState).toEqual(initialState);
+    });
+
+    it('Should get only the data from store state', () => {
+      const initialState = {
+        data: 'data'
+      };
+
+      const reducer = (state, action) => ({ ...initialState });
+
+      let resultedState;
+      const Child = () => {
+        const [data, dispatch] = useStore(s => s.data);
+        resultedState = data;
+        return <div />;
+      };
+
+      renderWithStore(<Child />, { initialState, reducer });
+
+      expect(resultedState).toEqual(initialState.data);
+    });
+
+    it('Should get only the data from store state + the action from the reducer', () => {
+      const initialState = {
+        data: 'data'
+      };
+
+      const st1Action = () => ({type: 'ACTION'});
+
+      const reducer = (state, action) => ({ ...initialState });
+
+      let resultedState, resultedDispatch;
+      const Child = () => {
+        const [data, actions] = useStore(s => s.data, {
+          st1: st1Action
+        });
+
+        resultedState = data;
+        resultedDispatch = actions;
+        return <div />;
+      };
+
+      renderWithStore(<Child />, { initialState, reducer });
+
+      expect(resultedState).toEqual(initialState.data);
+      expect(typeof resultedDispatch.st1).toBe('function');
     });
   });
 });
