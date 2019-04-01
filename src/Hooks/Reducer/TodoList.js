@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useStore } from './store';
+import { useStore } from 'use-hooks-store';
 import { deleteTodo } from '../../state/actions';
 
 const TodoList = () => {
