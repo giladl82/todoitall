@@ -7,10 +7,10 @@ export const configureStore = state => {
   return createStore(
     reducer,
     state,
-    compose(
-      typeof window === 'object' && typeof window.devToolsExtension !== 'undefined'
-        ? window.devToolsExtension()
-        : f => f
-    )
+    // compose(
+    //   typeof window === 'object' && typeof window.devToolsExtension !== 'undefined'
+    //     ? window.devToolsExtension()
+    //     : f => f
+    // )
   );
 };
