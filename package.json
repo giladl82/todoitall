@@ -12,7 +12,8 @@
     "react-scripts": "2.1.5",
     "react-testing-library": "^6.0.0",
     "redux": "^4.0.1",
-    "superstruct": "^0.6.0"
+    "superstruct": "^0.6.0",
+    "use-hooks-store": "^0.1.4"
   },
   "scripts": {
     "predeploy": "npm run build",

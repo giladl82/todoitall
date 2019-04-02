@@ -1,6 +1,6 @@
 import { ADD_TODO, DELETE_TODO } from './action-types';
 
-const initialState = {
+export const initialState = {
   todos: [],
   count: 1
 };

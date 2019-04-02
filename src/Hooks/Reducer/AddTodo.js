@@ -1,7 +1,7 @@
 import React from 'react';
 
 import useForm from '../useForm';
-import { useStore } from './store';
+import { useStore } from 'use-hooks-store';
 import { addTodo } from '../../state/actions';
 
 const AddTodo = () => {
