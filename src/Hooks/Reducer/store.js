@@ -3,13 +3,21 @@ import { struct } from 'superstruct';
 import PropTypes from 'prop-types';
 
 const validateStoreCreatorStruct = struct({
-  initialState: 'any?',
+  state: 'any?',
   reducer: 'function'
 });
 
-const validateCombineReducersStruct = struct({
-  reducers: struct.dict(['string', 'function'])
-});
+const validateCombineReducersStruct = ({ reducers }) => {
+  const schema1 = struct.dict(['string', 'function']);
+  const schema2 = struct.function(v => Object.keys(v).length > 0);
+  const schema = struct.intersection([schema1, schema2]);
+  const errors = schema.validate(reducers);
+  if (errors[0]) {
+    throw new Error(errors[0]);
+  }
+
+  return true;
+};
 
 const validateUseStoreStruct = struct({
   mapStateAs: 'function?',
@@ -72,13 +80,14 @@ Provider.defaultProps = {
   enableDebug: false
 };
 
-export const useStoreCreator = (initialState, reducer) => {
+export const useStoreCreator = (state, reducer) => {
   validateStoreCreatorStruct({
-    initialState,
+    state,
     reducer
   });
+
   const ACTION_TYPE = '@@INIT_STATE';
-  const [store, dispatch] = useReducer(reducer, reducer(initialState, { ACTION_TYPE }));
+  const [store, dispatch] = useReducer(reducer, reducer({...state}, { ACTION_TYPE }));
   const [action, setAction] = useState(ACTION_TYPE);
 
   store.__dispatch = dispatch;
