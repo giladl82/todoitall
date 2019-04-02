@@ -29,6 +29,7 @@ export const Provider = ({ children, state, reducer, enableDebug }) => {
 
   useEffect(() => {
     if (enableDebug) {
+
       if (
         window.__REDUX_DEVTOOLS_EXTENSION__ &&
         window.__REDUX_DEVTOOLS_EXTENSION__.connect &&
@@ -76,7 +77,7 @@ export const useStoreCreator = (initialState, reducer) => {
     initialState,
     reducer
   });
-  const ACTION_TYPE = '';
+  const ACTION_TYPE = '@@INIT_STATE';
   const [store, dispatch] = useReducer(reducer, reducer(initialState, { ACTION_TYPE }));
   const [action, setAction] = useState(ACTION_TYPE);
 
