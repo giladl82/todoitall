@@ -5,13 +5,16 @@ import { useStore } from './store';
 import { addTodo } from '../../state/actions';
 
 const AddTodo = () => {
-  const dispatch = useStore()[1];
+  const actionCreators = useStore(undefined, {
+    addTodo
+  })[1];
 
   const { values, handleChange, reset } = useForm();
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(addTodo(values));
+    // dispatch(addTodo(values));
+    actionCreators.addTodo(values);
     reset();
   };
 
