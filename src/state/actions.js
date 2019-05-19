@@ -1,7 +1,7 @@
 import { ADD_TODO, DELETE_TODO } from './action-types';
 
 const timeout = ms => {
-  return new Promise(resolve => setTimeout(resolve(), ms));
+  return new Promise(resolve => setTimeout(resolve, ms));
 };
 
 export const addTodo = async ({ todo }) => {
